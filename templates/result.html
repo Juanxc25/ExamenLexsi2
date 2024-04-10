@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado del Lexer y Parser</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Analizador</h1>
+        
+        <p>Código:</p>
+        <pre>{{ code }}</pre>
+
+        <p>Tokens:</p>
+        <ul>
+            {% for token in tokens %}
+                <li>{{ token.type }}: {{ token.value }} (Línea: {{ token.line }}, Posición: {{ token.lexpos }})</li>
+            {% endfor %}
+        </ul>
+
+        <div id="resultContainer">
+            <p>Error de sintaxis:</p>
+            <pre>{{ resultado_sintactico.message }}</pre>
+        </div>
+
+        <div id="debugContainer">
+            <p>Mensajes de depuración:</p>
+            <pre>
+                {% for message in debug_messages %}
+                    {{ message }}
+                {% endfor %}
+            </pre>
+        </div>
+
+    </div>
+</body>
+</html>

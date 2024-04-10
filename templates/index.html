@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codigo a Analizar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".txt">
+        <button type="submit">Subir y Analizar</button>
+    </form>
+    <h1>Inserta Codigo a Analizar</h1>
+    <div class="input-container">
+        <textarea id="code" rows="4" cols="50"></textarea>
+        <button onclick="analizarCodigo()">Analizar código</button>
+    </div>
+    <div id="resultContainer"></div> 
+    <script>
+      function analizarCodigo() {
+          const codigo = document.getElementById('code').value;
+
+          fetch('/api/v1/lexer', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ code: codigo }),
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`¡Error HTTP! Estado: ${response.status}`);
+              }
+              return response.text();  
+          })
+          .then(data => {
+              document.getElementById('resultContainer').innerHTML = data;
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    </script>
+</body>
+</html>

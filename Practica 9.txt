@@ -1,0 +1,292 @@
+Práctica 8
+
+switch  	mac-adress 	priority 	root
+Laboratorio1   0040.0B6E.92D8   32769
+Laboratorio2   0060.2FEC.0079   32769
+Site	       0060.5C06.1DE3   24577     This bridge is the root 
+
+Práctica 9
+
+Practica09-CHEP -PP UNACH
+7:08 pm Lunes, 26 de febrero del 2024
+Autor: Diana Laura Velasco Torres
+Semestre:6TO M
+Matricula:A210390
+
+Paso1.- Configuramos las interfaces del router Unach-router
+
+Router(config)#hostname unach
+unach(config)#inter g0/0/0
+unach(config-if)#descript gateway  civil 202.19.77.0/26
+unach(config-if)#descript gateway  civil 202.19.75.0/25
+unach(config-if)#ip address 202.19.75.1 255.255.255.128
+unach(config-if)#no sh
+
+unach(config)#inter g0/0/1
+unach(config-if)#descropt gateway sistemas 202.19.75.128/25
+                      ^
+% Invalid input detected at '^' marker.
+	
+unach(config-if)#descript gateway sistemas 202.19.75.128/25
+unach(config-if)#ip address 202.19.75.129 255.255.255.128
+unach(config-if)#no sh
+
+unach(config)#
+unach(config)#inter s 0/1/0
+unach(config-if)#descript DCE  202.19.73.0/30
+unach(config-if)#ip addres 202.19.73.1 255.255.255.252
+unach(config-if)#clock rate 64000
+unach(config-if)#no sh 
+
+unach(config-if)#
+
+Paso2.- Configuramos interfaces del router unach2
+
+Router>ena
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname Unach2
+Unach2(config)#inter g 0/0
+Unach2(config-if)#descript gateway lenguas 202.19.76.0/26
+Unach2(config-if)#ip address  202.19.76.1 255.255.255.192
+Unach2(config-if)#no sh
+
+Unach2(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+Unach2(config-if)#exit
+Unach2(config)#inter g 0/1
+Unach2(config-if)#descript gateway conta 202.19.76.64/26
+Unach2(config-if)#ip address  202.19.76.65 255.255.255.192
+Unach2(config-if)#no sh
+
+Unach2(config-if)#
+Unach2(config-if)#inter s 0/0/0
+Unach2(config-if)#descript DTE 202.19.73.8/30
+Unach2(config-if)#ip address 202.19.73.10 255.255.255.252
+Unach2(config-if)#no sh
+
+Paso 3.- Configuramos las interfaces del router "CTI"
+
+Router>ena
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname CTI
+CTI(config)#inter s 0/1/0
+CTI(config-if)#descript DTE 202.19.73.0/30
+CTI(config-if)#ip address 202.19.73.2 255.255.255.252
+CTI(config-if)#no sh
+CTI(config-if)#end
+CTI#
+
+Enter configuration commands, one per line.  End with CNTL/Z.
+CTI(config)#inter g0/0/0
+CTI(config-if)#descript gateway 202.73.0/30
+CTI(config-if)#ip address 202.19.73.5 255.255.255.252
+CTI(config-if)#no sh
+
+
+Enter configuration commands, one per line.  End with CNTL/Z.
+CTI(config)#inter s0/1/1
+CTI(config-if)#descrip DTE 202.19.73.8/30
+CTI(config-if)#ip address 202.19.73.9 255.255.255.252
+CTI(config-if)#clock rate 64000
+CTI(config-if)#no sh
+CTI(config-if)#end
+CTI#
+
+Paso 4.- Configuracion del enrutamiento estático en elrouter unach1
+
+
+¿Qué redes tiene conectada el router unach1?
+
+202.19.75.0/25
+202.19.75.128/25
+202.19.72./30
+
+C       202.19.73.0/30 is directly connected, Serial0/1/0
+C       202.19.75.0/25 is directly connected, GigabitEthernet0/0/0
+C       202.19.75.128/25 is directly connected, GigabitEthernet0/0/1
+
+¿Qué tengo que hacer para agregar la red 202.19.73.8/30 al servidor a unach1?
+202.19.73.8/30
+
+ip route <red> <mascara> >next hop>
+ip route 202.19.73.8 255.255.255.252 202.19.73.2
+ip route 202.19.73.4 255.255.255.252 202.19.73.2
+
+Gateway of last resort is not set
+
+C       202.19.73.0/30 is directly connected, Serial0/1/0
+C       202.19.75.0/25 is directly connected, GigabitEthernet0/0/0
+C       202.19.75.128/25 is directly connected, GigabitEthernet0/0/1
+S       202.19.73.4/30 [1/0] via 202.19.73.2
+S       202.19.73.8/30 [1/0] via 202.19.73.2
+
+
+ip route <red> <mascara> >next hop interface>
+202.19.76.0/26
+202.19.76.64/26
+
+ip route 202.19.76.0 255.255.255.192 s0/1/0
+ip route 202.19.76.64 255.255.255.192 s0/1/0
+
+C       202.19.73.0/30 is directly connected, Serial0/1/0
+S       202.19.73.4/30 [1/0] via 202.19.73.2
+S       202.19.73.8/30 [1/0] via 202.19.73.2
+C       202.19.75.0/25 is directly connected, GigabitEthernet0/0/0
+C       202.19.75.128/25 is directly connected, GigabitEthernet0/0/1
+S       202.19.76.0/26 is directly connected, Serial0/1/0
+S       202.19.76.64/26 is directly connected, Serial0/1/0
+
+S       202.19.73.4/30 [1/0] via 202.19.73.2
+S       202.19.73.8/30 [1/0] via 202.19.73.2
+S       202.19.76.0/26 is directly connected, Serial0/1/0
+S       202.19.76.64/26 is directly connected, Serial0/1/0
+
+
+Paso 5.- Configuracion del enrutamiento estático en elrouter unach2
+
+¿Qué tengo que hacer para agregar la red 202.19.73.0-4/30 al servidor a unach1?
+
+202.19.73.8/30
+202.19.76.0/26
+202.19.76.64/26
+
+C       202.19.73.8/30 is directly connected, Serial0/0/0
+C       202.19.76.0/26 is directly connected, GigabitEthernet0/0
+C       202.19.76.64/26 is directly connected, GigabitEthernet0/1
+
+
+ip route <red> <mascara> >next hop>
+ip route 202.19.73.0 255.255.255.252 202.19.73.9
+ip route 202.19.73.4 255.255.255.252 202.19.73.9
+
+
+Unach2(config)#ip route 202.19.73.0 255.255.255.252 202.19.73.9
+Unach2(config)#ip route 202.19.73.4 255.255.255.252 202.19.73.9
+Unach2(config)#end
+
+
+S       202.19.73.0/30 [1/0] via 202.19.73.9
+S       202.19.73.4/30 [1/0] via 202.19.73.9
+C       202.19.73.8/30 is directly connected, Serial0/0/0
+C       202.19.76.0/26 is directly connected, GigabitEthernet0/0
+C       202.19.76.64/26 is directly connected, GigabitEthernet0/1
+
+AD- Distancia Administriva
+
+ip route 202.19.75.0 255.255.255.128 202.19.73.9
+ip route 202.19.75.128 255.255.255.128 202.19.73.9
+
+S       202.19.73.0/30 [1/0] via 202.19.73.9
+S       202.19.73.4/30 [1/0] via 202.19.73.9
+C       202.19.73.8/30 is directly connected, Serial0/0/0
+S       202.19.75.0/25 [1/0] via 202.19.73.9
+S       202.19.75.128/25 [1/0] via 202.19.73.9
+C       202.19.76.0/26 is directly connected, GigabitEthernet0/0
+C       202.19.76.64/26 is directly connected, GigabitEthernet0/1
+
+Paso 6.- Configuramos laas rutas estaticas para CTI
+
+202.19.75.0/25
+202.17.75.128.0/25
+202.19.76.0/26
+202.19.76.64/26
+
+ip route <red> <mascara> >next hop>
+ip route 202.19.75.0 255.255.255.128 202.19.73.1
+ip route 202.19.75.128 255.255.255.128 202.19.73.1
+ip route 202.19.76.0 255.255.255.192 202.19.73.10
+ip route 202.19.76.64 255.255.255.192 202.19.73.10
+
+     
+C       202.19.73.0/30 is directly connected, Serial0/1/0
+C       202.19.73.4/30 is directly connected, GigabitEthernet0/0/0
+C       202.19.73.8/30 is directly connected, Serial0/1/1
+S       202.19.75.0/25 [1/0] via 202.19.73.1
+S       202.19.75.128/25 [1/0] via 202.19.73.1
+S       202.19.76.0/26 [1/0] via 202.19.73.10
+S       202.19.76.64/26 [1/0] via 202.19.73.10
+
+Redes convergentes
+
+Paso 07.- Configuramos los pools para DHCP
+
+Configuramos el pool de civil
+
+CTI#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CTI(config)#ip dhcp excluded-address 202.19.75.1 202.19.75.9
+CTI(config)#ip dhcp pool POOL-CIVIL
+CTI(dhcp-config)#network 202.19.75.0 255.255.255.128
+CTI(dhcp-config)#default-router 202.19.75.1
+CTI(dhcp-config)#dns-server 202.19.73.6
+CTI(dhcp-config)#domain-name unach.mx
+CTI(dhcp-config)#end
+
+
+Enter configuration commands, one per line.  End with CNTL/Z.
+unach(config)#inter g0/0/0
+unach(config-if)#ip helper-address 202.19.73.2
+unach(config-if)#end
+
+
+Configuramos pool de sistemas
+CTI#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CTI(config)#ip dhcp excluded-address 202.19.75.129 202.19.75.134
+CTI(config)#ip dhcp pool POOL-SISTEMAS
+CTI(dhcp-config)#network 202.19.75.128 255.255.255.128
+CTI(dhcp-config)#default-router 202.19.75.129
+CTI(dhcp-config)#dns-server 202.19.73.6
+CTI(dhcp-config)#domain-name unach.mx
+CTI(dhcp-config)#end
+
+unach#ena
+unach#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+unach(config)#inter g0/0/1
+unach(config-if)#ip helper-address 202.19.73.2
+unach(config-if)#end
+unach#
+
+Configuramos pool de lenguas 
+
+CTI#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CTI(config)#ip dhcp excluded-address 202.19.76.1 202.19.76.14
+CTI(config)#ip dhcp pool POOL-LENGUAS
+CTI(dhcp-config)#network 202.19.76.0 255.255.255.192
+CTI(dhcp-config)#default-router 202.19.76.1
+CTI(dhcp-config)#dns-server 202.19.73.6
+CTI(dhcp-config)#domain-name unach.mx
+CTI(dhcp-config)#end
+CTI#
+
+Unach2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Unach2(config)#inter g0/0
+Unach2(config-if)#ip helper-address 202.19.73.9
+Unach2(config-if)#end
+
+Configuramos pool de Contaduria
+
+
+
+
+
+.
+
+
+
+
+
+
+
+
+
+
+.

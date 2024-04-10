@@ -1,0 +1,100 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ARRAY
+    COLON
+    COMMA
+    DEF
+    ELSE
+    FOR
+    IF
+    OBJECT
+    PRINT
+    PRINTLN
+    UNIT
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> programa_1
+Rule 2     programa_1 -> USING SYSTEM SEMICOLON object_declaration
+Rule 3     object_declaration -> NAMESPACE ID LBRACE main_declaration RBRACE
+Rule 4     main_declaration -> CLASS ID LBRACE args RBRACE
+Rule 5     args -> STATIC VOID MAIN LPAREN STRING_TYPE LEFT_BRACKET RIGHT_BRACKET ARGS RPAREN LBRACE statements RBRACE
+Rule 6     statements -> statement
+Rule 7     statements -> statements statement
+Rule 8     statement -> expression SEMICOLON
+Rule 9     statement -> println_statement
+Rule 10    statement -> assignment
+Rule 11    println_statement -> SYSTEM DOT CONSOLE DOT WRITELINE LPAREN STRING_LITERAL RPAREN SEMICOLON
+Rule 12    expression -> term
+Rule 13    expression -> expression PLUS term
+Rule 14    expression -> expression MINUS term
+Rule 15    term -> factor
+Rule 16    term -> term TIMES factor
+Rule 17    term -> term DIVIDE factor
+Rule 18    factor -> NUMBER
+Rule 19    factor -> ID
+Rule 20    factor -> LPAREN expression RPAREN
+Rule 21    assignment -> ID EQUALS expression
+
+Terminals, with rules where they appear
+
+ARGS                 : 5
+ARRAY                : 
+COLON                : 
+COMMA                : 
+DEF                  : 
+DIVIDE               : 17
+DOT                  : 11 11
+ELSE                 : 
+EQUALS               : 21
+FOR                  : 
+ID                   : 3 4 19 21
+IF                   : 
+LBRACE               : 3 4 5
+LEFT_BRACKET         : 5
+LPAREN               : 5 11 20
+MAIN                 : 5
+MINUS                : 14
+NUMBER               : 18
+OBJECT               : 
+PLUS                 : 13
+PRINT                : 
+PRINTLN              : 
+RBRACE               : 3 4 5
+RIGHT_BRACKET        : 5
+RPAREN               : 5 11 20
+SEMICOLON            : 2 8 11
+STRING_LITERAL       : 11
+STRING_TYPE          : 5
+TIMES                : 16
+UNIT                 : 
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+CLASS                : 4
+CONSOLE              : 11
+NAMESPACE            : 3
+STATIC               : 5
+SYSTEM               : 2 11
+USING                : 2
+VOID                 : 5
+WRITELINE            : 11
+args                 : 4
+assignment           : 10
+expression           : 8 13 14 20 21
+factor               : 15 16 17
+main_declaration     : 3
+object_declaration   : 2
+println_statement    : 9
+program              : 0
+programa_1           : 1
+statement            : 6 7
+statements           : 5 7
+term                 : 12 13 14 16 17
+
